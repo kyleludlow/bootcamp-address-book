@@ -1,7 +1,65 @@
+body {
+    background-color: #1976D2;
+}
 .fullInfo {
     display: none;
 }
 
 ul {
     list-style: none;
+}
+
+.container {
+    background-color: #2196F3;
+    text-align: center;
+    margin-top: 2em;
+    border: 3px solid black;
+    padding: 3rem;
+    box-shadow: 2px 2px 10px 1px black;
+}
+
+input[type="text"],
+input[type="phone"],
+input[type="email"] {
+    border: none;
+    background-color: transparent;
+    color: black;
+    border-bottom: 1px solid black;
+    width: 80%;
+    padding-bottom: 1rem;
+    margin: 1rem;
+}
+
+#submitButton {
+    border: none;
+    padding: 2em;
+    background-color: #FF5722;
+    border-radius: 10px;
+    transition: .4s;
+}
+
+#submitButton:hover {
+    box-shadow: 1px 1px 5px black;
+    background-color: rgba(255, 87, 34, 1, 0.5);
+}
+
+::-webkit-input-placeholder {
+   color: black;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: black;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: black;  
+}
+
+:-ms-input-placeholder {  
+   color: black;  
+}
+
+.contactListItems:hover {
+    font-weight: bold;
+    cursor: pointer;
 }
