@@ -4,15 +4,15 @@ var newContactForm = document.querySelector('#contactForm');
 // Address book object
 var addressBook = {
 	contacts: [],
-// 	{name: "Simon", phone: ["1234", "5678"], email: ["me@me.com"], id: 3, address: ["aaaa", "bbbbb"]},
-	           //{name: "bob", phone: ["111", '222'], email: ['bob@bob.com'], id: 7, address: ["ppppp", "qqqqq"]}
 	
+	// catch all function to find an entry by it's unique ID
 	findEntry: function(id) {
-	    var obj = this.contacts.filter(function(x) {
-	        return x.id === id;
+	    var obj = this.contacts.filter(function(x) { // jump into contacts array and assign contact entry object to x
+	        return x.id === id; // return the entry's ID to 'obj' if it matches the ID passed as an argument;
 	    });
-	    return obj.pop();
+	    return obj.pop(); // I have no idea why this works. without .pop() you get an unreadable object. Actually added by accident when playing with it in DevTools
 	},
+	
 	
 	addPhone: function(id, number) {
 	    var entry = this.findEntry(id);
@@ -28,7 +28,7 @@ var addressBook = {
 	    var entry = this.findEntry(id);
 	    var HTML = "";
 	    for (var i = 0; i < entry.phone.length; i++) {
-	        HTML += '<li data-id="' + entry.id + '>Phone Number ' + (i + 1) + ': ' + entry.phone[i] + '</li>';
+	        HTML += '<li data-id="' + entry.id + '" class="fullInfo">Phone Number ' + (i + 1) + ': ' + entry.phone[i] + '</li>';
 	    }
 	    return HTML;
 	},
@@ -37,7 +37,7 @@ var addressBook = {
 	    var entry = this.findEntry(id);
 	    var HTML = "";
 	    for (var i = 0; i < entry.email.length; i++) {
-	        HTML += '<li data-id="' + entry.id + '">Email ' + (i + 1) + ': ' + entry.email[i] + '</li>';
+	        HTML += '<li data-id="' + entry.id + '" class="fullInfo">Email ' + (i + 1) + ': ' + entry.email[i] + '</li>';
 	    }
 	    return HTML;
 	},
@@ -46,20 +46,22 @@ var addressBook = {
 	    var entry = this.findEntry(id);
 	    var HTML = "";
 	    for (var i = 0; i < entry.address.length; i++) {
-	        HTML += '<li data-id="' + entry.id + '">Address ' + (i + 1) + ': ' + entry.address[i] + '</li>';
+	        HTML += '<li data-id="' + entry.id + '" class="fullInfo">Address ' + (i + 1) + ': ' + entry.address[i] + '</li>';
 	    }
 	    return HTML;
 	},
 	
 	getAllDetails: function() {
 	    var fullDetailsHTML = "";
-	    var that = this;
-	    this.contacts.forEach(function(entry) {
-	        fullDetailsHTML += '<li data-id=' + entry.id + '">Name: ' + entry.name + '</li>';
+	    var that = this; // storing current reference to 'this' (the address book) for use inside the loop
+	    this.contacts.forEach(function(entry) { // forEach 'entry' in the contacts array...
+	        fullDetailsHTML += '<div class="contactListItem">';
+	        fullDetailsHTML += '<li data-id="' + entry.id + '">Name: ' + entry.name + '</li>';
 	        fullDetailsHTML += that.getPhoneHTML(entry.id);
 	        fullDetailsHTML += that.getEmailHTML(entry.id);
 	        fullDetailsHTML += that.getAddressHTML(entry.id);
-	        fullDetailsHTML += '<li><button class="btn btn-danger" data-id=' + entry.id + '>Delete</button></li><div>';
+	        fullDetailsHTML += '<li><button class="btn btn-danger" data-id=' + entry.id + '>Delete</button></li>';
+	        fullDetailsHTML += '</div>';
 	    });
 	    return fullDetailsHTML;
 	}
@@ -74,6 +76,7 @@ function Contact(newContact) {
 	this.id = newContact.id;
 }
 
+////////   Looks like we don't need all this anymore.......yeah....I laughed too :( ////////////////
 
 // var displayContactNames = function() {
 //     // clear current list to prevent duplicates and clear deleted contacts
@@ -96,6 +99,8 @@ function Contact(newContact) {
 //         $('#contactList').append(listHTML); // append full contact to list
 //     }
 // };
+
+
 
 var displayContactNames = function() {
     $('#contactList').html(""); 
@@ -129,6 +134,7 @@ $(function() { // jquery 'doc ready' shorthand
     
     // handler for displaying full contact info
     $('#contactList').on('click', 'li', function() {
+        console.log(this);
         var id = $(this).data('id');
         $('[data-id="' + id + '"]').slideToggle();
     });
@@ -148,8 +154,7 @@ $(function() { // jquery 'doc ready' shorthand
     // bootstrap fix for giving focus to input on modal show
     $('#addContactModal').on('shown.bs.modal', function () {
       $('input[name="name"]').focus();
-    })
-    displayContactNames();
+    });
 });
 
 
