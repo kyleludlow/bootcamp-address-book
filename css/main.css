@@ -26,8 +26,8 @@ ul {
     padding: 1em;
     box-shadow: 0 12px 19px -8px black;
     border-bottom: 1px solid black;
+    font-size: 1.1em;
 }
-
 
 .contactListItem > li:first-child {
     font-weight: bold;
@@ -64,8 +64,8 @@ input[type="email"] {
     color: black;
     border-bottom: 1px solid black;
     width: 80%;
-    padding: 1rem 0;
-    margin: 1rem;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 

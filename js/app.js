@@ -19,7 +19,6 @@ function Contact(newContact) {
 }
 
 
-
 var displayContactNames = function() {
     // clear current list to prevent duplicates and clear deleted contacts
     $('#contactList').html(""); 
