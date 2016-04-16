@@ -44,6 +44,7 @@ $(function() { // jquery doc ready shorthand
     // adding a new contact handler
     newContactForm.addEventListener('submit', function(event) {
         event.preventDefault();
+        // send an object of parameters to the Contact constructor
         var contact = new Contact({ name: this[0].value, 
                                     email: this[1].value, 
                                     phone: this[2].value, 
@@ -53,9 +54,9 @@ $(function() { // jquery doc ready shorthand
                                     addressLine4: this[6].value,
                                     id: globalId
         });
-        addressBook.contact.push(contact);
-        displayContactNames(); // repopulate list with new addition
-        globalId++;            // update global id for next contact
+        addressBook.contact.push(contact);  // push contact to addressBook
+        displayContactNames();              // repopulate list with new addition
+        globalId++;                         // update global id for next contact
         $('#contactForm')[0].reset();
         $('input[name="name"]').focus();
     });
