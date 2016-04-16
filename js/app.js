@@ -3,57 +3,124 @@ var newContactForm = document.querySelector('#contactForm');
 
 // Address book object
 var addressBook = {
-	contact: []
+	contacts: [],
+// 	{name: "Simon", phone: ["1234", "5678"], email: ["me@me.com"], id: 3, address: ["aaaa", "bbbbb"]},
+	           //{name: "bob", phone: ["111", '222'], email: ['bob@bob.com'], id: 7, address: ["ppppp", "qqqqq"]}
+	
+	findEntry: function(id) {
+	    var obj = this.contacts.filter(function(x) {
+	        return x.id === id;
+	    });
+	    return obj.pop();
+	},
+	
+	addPhone: function(id, number) {
+	    var entry = this.findEntry(id);
+	    entry.phone.push(number);
+	},
+	
+	addEmail: function(id, email) {
+	    var entry = this.findEntry(id);
+	    entry.email.push(email);
+	},
+	
+	getPhoneHTML: function(id) {
+	    var entry = this.findEntry(id);
+	    var HTML = "";
+	    for (var i = 0; i < entry.phone.length; i++) {
+	        HTML += '<li data-id="' + entry.id + '>Phone Number ' + (i + 1) + ': ' + entry.phone[i] + '</li>';
+	    }
+	    return HTML;
+	},
+	
+	getEmailHTML: function(id) {
+	    var entry = this.findEntry(id);
+	    var HTML = "";
+	    for (var i = 0; i < entry.email.length; i++) {
+	        HTML += '<li data-id="' + entry.id + '">Email ' + (i + 1) + ': ' + entry.email[i] + '</li>';
+	    }
+	    return HTML;
+	},
+	
+	getAddressHTML: function(id) {
+	    var entry = this.findEntry(id);
+	    var HTML = "";
+	    for (var i = 0; i < entry.address.length; i++) {
+	        HTML += '<li data-id="' + entry.id + '">Address ' + (i + 1) + ': ' + entry.address[i] + '</li>';
+	    }
+	    return HTML;
+	},
+	
+	getAllDetails: function() {
+	    var fullDetailsHTML = "";
+	    var that = this;
+	    this.contacts.forEach(function(entry) {
+	        fullDetailsHTML += '<li data-id=' + entry.id + '">Name: ' + entry.name + '</li>';
+	        fullDetailsHTML += that.getPhoneHTML(entry.id);
+	        fullDetailsHTML += that.getEmailHTML(entry.id);
+	        fullDetailsHTML += that.getAddressHTML(entry.id);
+	        fullDetailsHTML += '<li><button class="btn btn-danger" data-id=' + entry.id + '>Delete</button></li><div>';
+	    });
+	    return fullDetailsHTML;
+	}
 };
 
 // constuctor function for new contacts
 function Contact(newContact) {
 	this.name = newContact.name;
 	this.phone = newContact.phone;
-	this.addressLine1 = newContact.addressLine1;
-	this.addressLine2 = newContact.addressLine2;
-	this.addressLine3 = newContact.addressLine3;
-	this.addressLine4 = newContact.addressLine4;
+	this.address = newContact.address;
 	this.email = newContact.email;
 	this.id = newContact.id;
 }
 
 
-var displayContactNames = function() {
-    // clear current list to prevent duplicates and clear deleted contacts
-    $('#contactList').html(""); 
-    // loop through each contact and build HTML
-    for( var i = 0; i < addressBook.contact.length; i++) {
-        var listHTML = '<div class="contactListItem"><li data-id="' + addressBook.contact[i].id + '">' + addressBook.contact[i].name + '</li>';
+// var displayContactNames = function() {
+//     // clear current list to prevent duplicates and clear deleted contacts
+//     $('#contactList').html(""); 
+//     // loop through each contact and build HTML
+//     for( var i = 0; i < addressBook.contacts.length; i++) {
+//         var listHTML = '<div class="contactListItem">'
+//                         + '<li data-id="' + addressBook.contacts[i].id + '">'
+//                         + addressBook.contacts[i].name 
+//                         + '</li>';
         
-        var prop; 
-        for (prop in addressBook.contact[i]) {
-            if (prop !== 'id') { // don't want the id in the contact view
-                listHTML += '<li class="fullInfo" data-id="' + addressBook.contact[i].id +'">' + addressBook.contact[i][prop] + '</li>';
-            }
-        }        
-        listHTML += '<li><button class="btn btn-danger" data-id=' + addressBook.contact[i].id + '>Delete</button></li><div>'; // close out HTML
-        $('#contactList').append(listHTML); // append full contact to list
-    }
+//         var prop; 
+//         for (prop in addressBook.contacts[i]) {
+//             if (prop !== 'id') { // don't want the id in the contact view
+//                 listHTML += '<li class="fullInfo" data-id="' + addressBook.contacts[i].id + '">' 
+//                             + addressBook.contacts[i][prop] + '</li>';
+//             }
+//         }        
+//         listHTML += '<li><button class="btn btn-danger" data-id=' + addressBook.contacts[i].id + '>Delete</button></li><div>'; // close out HTML
+//         $('#contactList').append(listHTML); // append full contact to list
+//     }
+// };
+
+var displayContactNames = function() {
+    $('#contactList').html(""); 
+    $('#contactList').append(addressBook.getAllDetails());
 };
 
 
-$(function() { // jquery doc ready shorthand
+$(function() { // jquery 'doc ready' shorthand
+
+
 
     // adding a new contact handler
     newContactForm.addEventListener('submit', function(event) {
         event.preventDefault();
         // send an object of parameters to the Contact constructor
         var contact = new Contact({ name: this[0].value, 
-                                    email: this[1].value, 
-                                    phone: this[2].value, 
-                                    addressLine1: this[3].value,
-                                    addressLine2: this[4].value, 
-                                    addressLine3: this[5].value, 
-                                    addressLine4: this[6].value,
+                                    email: [this[1].value], 
+                                    phone: [this[2].value], 
+                                    address: [this[3].value,
+                                              this[4].value, 
+                                              this[5].value, 
+                                              this[6].value],
                                     id: globalId
         });
-        addressBook.contact.push(contact);  // push contact to addressBook
+        addressBook.contacts.push(contact);  // push contact to addressBook
         displayContactNames();              // repopulate list with new addition
         globalId++;                         // update global id for next contact
         $('#contactForm')[0].reset();
@@ -70,9 +137,9 @@ $(function() { // jquery doc ready shorthand
     // handler for deleting a contact
     $('#contactList').on('click', 'button', function() {
         var id = $(this).data('id');
-        for (var i = 0; i < addressBook.contact.length; i++) {
-            if (addressBook.contact[i].id === id) {
-                addressBook.contact.splice(i, 1);
+        for (var i = 0; i < addressBook.contacts.length; i++) {
+            if (addressBook.contacts[i].id === id) {
+                addressBook.contacts.splice(i, 1);
             }
         }
         displayContactNames();
@@ -82,7 +149,7 @@ $(function() { // jquery doc ready shorthand
     $('#addContactModal').on('shown.bs.modal', function () {
       $('input[name="name"]').focus();
     })
-
+    displayContactNames();
 });
 
 
