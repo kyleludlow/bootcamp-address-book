@@ -1,5 +1,6 @@
 var globalId = 0; // each contact will have an indiviual global id 
-var newContactForm = document.querySelector('#contactForm'); 
+var newContactForm = document.querySelector('#contactForm');
+
 
 // Address book object
 var addressBook = {
@@ -14,12 +15,12 @@ var addressBook = {
 	},
 	
 	
-	addPhone: function(id, number) {
+	addPhone: function(id, number) { // to be implemented
 	    var entry = this.findEntry(id);
 	    entry.phone.push(number);
 	},
 	
-	addEmail: function(id, email) {
+	addEmail: function(id, email) { // to be implemented
 	    var entry = this.findEntry(id);
 	    entry.email.push(email);
 	},
@@ -28,7 +29,8 @@ var addressBook = {
 	    var entry = this.findEntry(id);
 	    var HTML = "";
 	    for (var i = 0; i < entry.phone.length; i++) {
-	        HTML += '<li data-id="' + entry.id + '" class="fullInfo">Phone Number ' + (i + 1) + ': ' + entry.phone[i] + '</li>';
+	        HTML += '<li data-id="' + entry.id + '" class="fullInfo"><strong>Phone Number ';
+            HTML += (i + 1) + ':</strong> ' + entry.phone[i] + '</li>';
 	    }
 	    return HTML;
 	},
@@ -37,16 +39,17 @@ var addressBook = {
 	    var entry = this.findEntry(id);
 	    var HTML = "";
 	    for (var i = 0; i < entry.email.length; i++) {
-	        HTML += '<li data-id="' + entry.id + '" class="fullInfo">Email ' + (i + 1) + ': ' + entry.email[i] + '</li>';
+	        HTML += '<li data-id="' + entry.id + '" class="fullInfo"><strong>Email '; 
+            HTML += (i + 1) + ':</strong> ' + entry.email[i] + '</li>';
 	    }
 	    return HTML;
 	},
 	
 	getAddressHTML: function(id) {
 	    var entry = this.findEntry(id);
-	    var HTML = "";
+	    var HTML = '<li data-id="' + entry.id + '"class="fullInfo"><strong>Address:</strong></li>';
 	    for (var i = 0; i < entry.address.length; i++) {
-	        HTML += '<li data-id="' + entry.id + '" class="fullInfo">Address ' + (i + 1) + ': ' + entry.address[i] + '</li>';
+	        HTML += '<li data-id="' + entry.id + '" class="fullInfo">' + entry.address[i] + '</li>';
 	    }
 	    return HTML;
 	},
@@ -57,6 +60,7 @@ var addressBook = {
 	    this.contacts.forEach(function(entry) { // forEach 'entry' in the contacts array...
 	        fullDetailsHTML += '<div class="contactListItem">';
 	        fullDetailsHTML += '<li data-id="' + entry.id + '">Name: ' + entry.name + '</li>';
+            fullDetailsHTML += '<li class="fullInfo glyphicon glyphicon-remove" data-id="' + entry.id + '"></li>';
 	        fullDetailsHTML += that.getPhoneHTML(entry.id);
 	        fullDetailsHTML += that.getEmailHTML(entry.id);
 	        fullDetailsHTML += that.getAddressHTML(entry.id);
@@ -109,8 +113,6 @@ var displayContactNames = function() {
 
 
 $(function() { // jquery 'doc ready' shorthand
-
-
 
     // adding a new contact handler
     newContactForm.addEventListener('submit', function(event) {

@@ -1,3 +1,5 @@
+/*==================== General ===========================*/
+
 body {
     background-color: #E5E5E5;
 }
@@ -10,6 +12,8 @@ body {
 .container > h1 {
     margin-bottom: 1em;
 }
+
+/*================== Contact List =====================*/
 
 ul {
     list-style: none;
@@ -35,6 +39,10 @@ ul {
     margin: 0 .5em;
 }
 
+.contactListItem > li:first-child:before {
+    content = "p";
+}
+
 .contactListItem > li:nth-child(2) {
     margin-top: 3em;
 }
@@ -53,8 +61,20 @@ ul {
     margin-top: -2.4em;
 }
 
+.glyphicon-remove {
+    float: right;
+}
 
-/*==================== form =====================*/
+.glyphicon-plus:before {
+    content: "\002b";
+    font-size: 0.8em;
+    margin: 0 1em;
+    border: 3px solid black;
+    border-radius: 100%;
+    padding-left: 0.1em;
+}
+
+/*==================== modal form =====================*/
 
 input[type="text"],
 input[type="phone"],
